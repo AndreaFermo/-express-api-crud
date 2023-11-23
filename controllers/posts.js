@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { generateSlug } = require("../utilities/controllerUtilities");
 
-async function index(req, res) {
+async function index(req, res, next) {
     
     try {
         const { published, search } = req.query;
@@ -31,12 +31,12 @@ async function index(req, res) {
         res.json({ message: "Post trovati con successo", result });
     }
     catch (error) {
-       console.error(error);
+       next(error);
     }
    
 };
 
-async function store(req, res) {
+async function store(req, res, next) {
     let requestUpdated;
     { try {
         
@@ -49,7 +49,7 @@ async function store(req, res) {
         requestUpdated = request
     } 
     catch (error) {
-       console.error(error);
+       next(error);
     }}
    
 
@@ -60,11 +60,11 @@ async function store(req, res) {
 
        res.json({"message": "post creato correttamente", result})
     } catch (error) {
-       console.error(error);
+       next(error);
    }
 };
 
-async function update(req, res) {
+async function update(req, res, next) {
     
     let requestUpdated;
         if (req.body.title){
@@ -79,7 +79,7 @@ async function update(req, res) {
             requestUpdated = request
         } 
         catch (error) {
-        console.error(error);
+        next(error);
         }}
     } else {
         requestUpdated = req.body
@@ -96,11 +96,11 @@ async function update(req, res) {
 
         res.json({"message":"post modificato con successo", result})
     } catch (error) {
-       console.error(error);
+       next(error);
     }
 };
 
-async function show(req, res) {
+async function show(req, res, next) {
     try {
         const result = await prisma.post.findUnique({
             where: {
@@ -111,11 +111,11 @@ async function show(req, res) {
        res.json({"message":"post trovato con successo", result});
     }
    catch (error) {
-        console.error(error);
+        next(error);
    }
 };
 
-async function destroy(req, res) {
+async function destroy(req, res, next) {
     try {
         const result = await prisma.post.delete({
             where: {
@@ -127,7 +127,7 @@ async function destroy(req, res) {
      
     }
    catch (error) {
-        console.error(error);
+        next(error);
    }
 
 };

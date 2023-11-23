@@ -8,12 +8,12 @@ async function index(req, res) {
         const { published, search } = req.query;
 
         let whereCondition = {};
-        
-        if (published == "true") {
+
+        if (published === "true") {
             whereCondition.published = true; 
         }
 
-        if (published == "false") {
+        if (published === "false") {
             whereCondition.published = false; 
         }
 
